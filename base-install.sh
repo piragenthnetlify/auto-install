@@ -7,7 +7,9 @@ command rm /etc/apt/sources.list
 command cp sources.list /etc/apt/
 command apt update && apt upgrade -y
 command apt install git sudo curl wget docker docker.io nano network-manager dhcpcd5 wireless-tools firmware-realtek linux-headers-generic build-essential dkms gdebi software-properties-common -y
+command git clone https://github.com/oblique/create_ap
 command git clone https://github.com/Mange/rtl8192eu-linux-driver
+command wget http://www.mobile-stream.com/beta/debian/10/easytether_0.8.9_amd64.deb
 command cd rtl8192eu-linux-driver
 command dkms add .   
 command dkms install rtl8192eu/1.0
@@ -18,9 +20,12 @@ command sudo update-grub; sudo update-initramfs -u
 command mv /etc/network/interfaces /etc/network/interfaces.backup
 command cp interfaces /etc/network/
 command ifup wlx7cc2c611779b 
-command git clone https://github.com/oblique/create_ap
-command wget http://www.mobile-stream.com/beta/debian/10/easytether_0.8.9_amd64.deb
+
+
 command gdebi easytether_0.8.9_amd64.deb
 command easytether-usb
 command dhcpcd tun-easytether
 command systemctl restart systemd-networkd
+
+
+
