@@ -20,12 +20,14 @@ command sudo update-grub; sudo update-initramfs -u
 command mv /etc/network/interfaces /etc/network/interfaces.backup
 command cp interfaces /etc/network/
 command ifup wlx7cc2c611779b 
-
-
 command gdebi easytether_0.8.9_amd64.deb
 command easytether-usb
 command dhcpcd tun-easytether
 command systemctl restart systemd-networkd
-
-
-
+command sudo wget -O - https://github.com/OpenMediaVault-Plugin-Developers/installScript/raw/master/install | sudo bash
+command sudo apt install apt-transport-https
+command wget -O - https://repo.jellyfin.org/jellyfin_team.gpg.key | sudo apt-key add -
+command echo "deb [arch=$( dpkg --print-architecture )] https://repo.jellyfin.org/$( awk -F'=' '/^ID=/{ print $NF }' /etc/os-release ) $( awk -F'=' '/^VERSION_CODENAME=/{ print $NF }' /etc/os-release ) main" | sudo tee /etc/apt/sources.list.d/jellyfin.list
+command sudo apt update
+command sudo apt install jellyfin
+command docker run -it -p 57:57/udp -p 57:57/tcp -p 8080:80 --name pihole pihole/pihole
