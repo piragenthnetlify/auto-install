@@ -2,6 +2,7 @@
 
 
 
+
 sed -i '/cdrom/d' '/etc/apt/sources.list'
 rm /etc/apt/sources.list
 cp sources.list /etc/apt/
