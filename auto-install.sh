@@ -55,7 +55,7 @@ if [[ $distro == "ubuntu" ]]; then
     echo "Installing essential packages..."
     apt install git sudo curl wget docker docker.io nano network-manager dhcpcd5 wireless-tools firmware-realtek linux-headers-generic build-essential dkms gdebi software-properties-common bmon -y
 
-    if [[ $hotspot == "y"]]; then
+    if [[ $hotspot == "y" ]]; then
         echo "cloning into https://github.com/oblique/create_ap"
         git clone https://github.com/oblique/create_ap
     fi
