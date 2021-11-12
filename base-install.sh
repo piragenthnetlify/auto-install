@@ -7,7 +7,7 @@ sed -i '/cdrom/d' '/etc/apt/sources.list'
 rm /etc/apt/sources.list
 cp sources.list /etc/apt/
 apt update && apt upgrade -y
-apt install git sudo curl wget docker docker.io nano network-manager dhcpcd5 wireless-tools firmware-realtek linux-headers-generic build-essential dkms gdebi software-properties-common bmon -y
+apt install git sudo curl wget docker docker.io nano network-manager dhcpcd5 wireless-tools firmware-realtek linux-headers-generic build-essential dkms gdebi software-properties-common bmon apt-transport-https -y
 git clone https://github.com/oblique/create_ap
 git clone https://github.com/Mange/rtl8192eu-linux-driver
 wget http://www.mobile-stream.com/beta/debian/10/easytether_0.8.9_amd64.deb
@@ -26,7 +26,6 @@ easytether-usb
 dhcpcd tun-easytether
 systemctl restart systemd-networkd
 sudo wget -O - https://github.com/OpenMediaVault-Plugin-Developers/installScript/raw/master/install | sudo bash
-sudo apt install apt-transport-https
 wget -O - https://repo.jellyfin.org/jellyfin_team.gpg.key | sudo apt-key add -
 echo "deb [arch=$( dpkg --print-architecture )] https://repo.jellyfin.org/$( awk -F'=' '/^ID=/{ print $NF }' /etc/os-release ) $( awk -F'=' '/^VERSION_CODENAME=/{ print $NF }' /etc/os-release ) main" | sudo tee /etc/apt/sources.list.d/jellyfin.list
 sudo apt update
