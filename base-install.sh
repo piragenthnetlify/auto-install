@@ -2,6 +2,7 @@
 
 
 
+
 sed -i '/cdrom/d' '/etc/apt/sources.list'
 rm /etc/apt/sources.list
 cp sources.list /etc/apt/
@@ -30,4 +31,9 @@ wget -O - https://repo.jellyfin.org/jellyfin_team.gpg.key | sudo apt-key add -
 echo "deb [arch=$( dpkg --print-architecture )] https://repo.jellyfin.org/$( awk -F'=' '/^ID=/{ print $NF }' /etc/os-release ) $( awk -F'=' '/^VERSION_CODENAME=/{ print $NF }' /etc/os-release ) main" | sudo tee /etc/apt/sources.list.d/jellyfin.list
 sudo apt update
 sudo apt install jellyfin
-docker run -it -p 57:57/udp -p 57:57/tcp -p 8080:80 --name pihole pihole/pihole
+systemctl stop systemd-resolved
+systemctl disable systemd-resolved
+mv /etc/resolv.conf /etc/resolv.autoinstall.backup
+cp resolv.conf /etc/
+docker run -it -p 53:53/udp -p 53:53/tcp -p 47:47/udp -p 47:47/tcp -p 67:67/tcp -p 67:67/udp -p 443:443 -p 8080:80 --name pihole pihole/pihole
+docker pull ubuntu
