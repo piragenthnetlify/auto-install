@@ -9,6 +9,7 @@ if [[ $distro == "debian" ]]; then
     deb  sed -i '/cdrom/d' '/etc/apt/sources.list'
     echo "Do you want to change sources.list (y/n)"
     read change_sources
+fi
 
 echo "Do you want to create hotspot using create_ap (y/n):"
 read hotspot
@@ -31,6 +32,7 @@ read pihole_yn
 if [[ $pihole_yn == "y" ]]; then
     echo "what pihole do you want to install networkchunk/nc or defaultpihole/pihole"
     read pihole
+fi
 
 echo "Do you want to pull ubuntu in docker (y/n)"
 read pull_ubuntu
