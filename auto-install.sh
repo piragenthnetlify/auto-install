@@ -72,6 +72,7 @@ if [[ $distro == "ubuntu" ]]; then
         echo "options 8192eu rtw_power_mgnt=0 rtw_enusbss=0" | sudo tee /etc/modprobe.d/8192eu.conf
         sudo update-grub; sudo update-initramfs -u
         cd ..
+        ./hotspot.sh
     fi
 
     if [[ $interfaces == "y"]]; then
