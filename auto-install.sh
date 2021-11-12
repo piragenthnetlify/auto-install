@@ -97,7 +97,7 @@ if [[ $distro == "ubuntu" ]]; then
     fi
 
     if [[ $pihole_yn == "y" ]]; then
-        if [[ $pihole == "pihole"]]; then
+        if [[ $pihole == "pihole" ]]; then
             echo "installing pihole"
             systemctl stop systemd-resolved
             systemctl disable systemd-resolved
