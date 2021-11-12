@@ -55,12 +55,12 @@ if [[ $distro == "ubuntu" ]]; then
     echo "Installing essential packages..."
     apt install git sudo curl wget docker docker.io nano network-manager dhcpcd5 wireless-tools firmware-realtek linux-headers-generic build-essential dkms gdebi software-properties-common bmon -y
 
-    if [[ $hotspot == "y"]]; then
+    if [[ $hotspot == "y" ]]; then
         echo "cloning into https://github.com/oblique/create_ap"
         git clone https://github.com/oblique/create_ap
     fi
 
-    if [[ $wifi_usb == "y"]]; then
+    if [[ $wifi_usb == "y" ]]; then
         echo "cloning into https://github.com/Mange/rtl8192eu-linux-driver"
         git clone git clone https://github.com/Mange/rtl8192eu-linux-driver
         echo "Installing wifi Drivers"
@@ -74,7 +74,7 @@ if [[ $distro == "ubuntu" ]]; then
         cd ..
     fi
 
-    if [[ $interfaces == "y"]]; then
+    if [[ $interfaces == "y" ]]; then
         echo "changing interfaces configuration"
         mv /etc/network/interfaces /etc/network/interfaces.backup
         cp interfaces /etc/network/
@@ -83,12 +83,12 @@ if [[ $distro == "ubuntu" ]]; then
         ifup wlan0
     fi
 
-    if [[ $omv == "y"]]; then
+    if [[ $omv == "y" ]]; then
         echo "Installing OMV"
         sudo wget -O - https://github.com/OpenMediaVault-Plugin-Developers/installScript/raw/master/install | sudo bash
     fi
 
-    if [[ $jellyfin == "y"]]; then
+    if [[ $jellyfin == "y" ]]; then
         echo "Installing jellyfin"
         wget -O - https://repo.jellyfin.org/jellyfin_team.gpg.key | sudo apt-key add -
         echo "deb [arch=$( dpkg --print-architecture )] https://repo.jellyfin.org/$( awk -F'=' '/^ID=/{ print $NF }' /etc/os-release ) $( awk -F'=' '/^VERSION_CODENAME=/{ print $NF }' /etc/os-release ) main" | sudo tee /etc/apt/sources.list.d/jellyfin.list
@@ -114,7 +114,7 @@ if [[ $distro == "ubuntu" ]]; then
         fi
     fi
 
-    if [[ $pull_ubuntu == "y"]]; then
+    if [[ $pull_ubuntu == "y" ]]; then
         echo "PUll Ubuntu from docker"
         docker pull ubuntu
     fi
@@ -123,7 +123,7 @@ fi
 
 
 
-if [[ $distro == "debian"]]; then
+if [[ $distro == "debian" ]]; then
     echo $distro
     if [[ $change_sources == "y" ]]; then
         rm /etc/apt/sources.list
@@ -155,7 +155,7 @@ if [[ $distro == "debian"]]; then
         cd ..
     fi
 
-    if [[ $interfaces == "y"]]; then
+    if [[ $interfaces == "y" ]]; then
         echo "changing interfaces configuration"
         mv /etc/network/interfaces /etc/network/interfaces.backup
         cp interfaces /etc/network/
@@ -164,12 +164,12 @@ if [[ $distro == "debian"]]; then
         ifup wlan0
     fi
 
-    if [[ $omv == "y"]]; then
+    if [[ $omv == "y" ]]; then
         echo "Installing OMV"
         sudo wget -O - https://github.com/OpenMediaVault-Plugin-Developers/installScript/raw/master/install | sudo bash
     fi
 
-    if [[ $jellyfin == "y"]]; then
+    if [[ $jellyfin == "y" ]]; then
         echo "Installing jellyfin"
         wget -O - https://repo.jellyfin.org/jellyfin_team.gpg.key | sudo apt-key add -
         echo "deb [arch=$( dpkg --print-architecture )] https://repo.jellyfin.org/$( awk -F'=' '/^ID=/{ print $NF }' /etc/os-release ) $( awk -F'=' '/^VERSION_CODENAME=/{ print $NF }' /etc/os-release ) main" | sudo tee /etc/apt/sources.list.d/jellyfin.list
@@ -195,7 +195,7 @@ if [[ $distro == "debian"]]; then
         fi
     fi
 
-    if [[ $pull_ubuntu == "y"]]; then
+    if [[ $pull_ubuntu == "y" ]]; then
         echo "PUll Ubuntu from docker"
         docker pull ubuntu
     fi
