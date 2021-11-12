@@ -55,7 +55,7 @@ if [[ $distro == "ubuntu" ]]; then
     echo "Installing essential packages..."
     apt install git sudo curl wget docker docker.io nano network-manager dhcpcd5 wireless-tools firmware-realtek linux-headers-generic build-essential dkms gdebi software-properties-common bmon -y
 
-    if [[ $hotspot == "y" ]]; then
+    if [[ $hotspot == "y"]]; then
         echo "cloning into https://github.com/oblique/create_ap"
         git clone https://github.com/oblique/create_ap
     fi
@@ -72,7 +72,6 @@ if [[ $distro == "ubuntu" ]]; then
         echo "options 8192eu rtw_power_mgnt=0 rtw_enusbss=0" | sudo tee /etc/modprobe.d/8192eu.conf
         sudo update-grub; sudo update-initramfs -u
         cd ..
-        ./hotspot.sh
     fi
 
     if [[ $interfaces == "y"]]; then
@@ -137,12 +136,12 @@ if [[ $distro == "debian"]]; then
     echo "Installing essential packages..."
     apt install git sudo curl wget docker docker.io nano network-manager dhcpcd5 wireless-tools firmware-realtek linux-headers-generic build-essential dkms gdebi software-properties-common bmon -y
 
-    if [[ $hotspot == "y"]]; then
+    if [[ $hotspot == "y" ]]; then
         echo "cloning into https://github.com/oblique/create_ap"
         git clone https://github.com/oblique/create_ap
     fi
 
-    if [[ $wifi_usb == "y"]]; then
+    if [[ $wifi_usb == "y" ]]; then
         echo "cloning into https://github.com/Mange/rtl8192eu-linux-driver"
         git clone git clone https://github.com/Mange/rtl8192eu-linux-driver
         echo "Installing wifi Drivers"
