@@ -52,6 +52,11 @@ systemctl restart systemd-networkd
 
 if [[ $distro == "ubuntu" ]]; then
     echo $distro
+    systemctl stop systemd-resolved
+    systemctl disable systemd-resolved
+    mv /etc/resolv.conf /etc/resolv.autoinstall.backup
+    cp resolv.conf /etc/
+
     echo "Updating and Upgrading system in Ubuntu..."
     apt update && apt upgrade -y
     echo "Installing essential packages..."
@@ -73,7 +78,6 @@ if [[ $distro == "ubuntu" ]]; then
         echo -e "8192eu\n\nloop" | sudo tee /etc/modules
         echo "options 8192eu rtw_power_mgnt=0 rtw_enusbss=0" | sudo tee /etc/modprobe.d/8192eu.conf
         sudo update-grub; sudo update-initramfs -u
-        cd ..
     fi
 
     if [[ $interfaces == "y" ]]; then
@@ -101,10 +105,6 @@ if [[ $distro == "ubuntu" ]]; then
     if [[ $pihole_yn == "y" ]]; then
         if [[ $pihole == "pihole" ]]; then
             echo "installing pihole"
-            systemctl stop systemd-resolved
-            systemctl disable systemd-resolved
-            mv /etc/resolv.conf /etc/resolv.autoinstall.backup
-            cp resolv.conf /etc/
             docker run -it -p 53:53/udp -p 53:53/tcp -p 47:47/udp -p 47:47/tcp -p 67:67/tcp -p 67:67/udp -p 443:443 -p 8080:80 --name pihole pihole/pihole
         fi
 
@@ -127,6 +127,12 @@ fi
 
 if [[ $distro == "debian" ]]; then
     echo $distro
+ 
+    systemctl stop systemd-resolved
+    systemctl disable systemd-resolved
+    mv /etc/resolv.conf /etc/resolv.autoinstall.backup
+    cp resolv.conf /etc/
+
     if [[ $change_sources == "y" ]]; then
         rm /etc/apt/sources.list
         cp sources.list /etc/apt/
