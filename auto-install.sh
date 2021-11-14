@@ -39,6 +39,11 @@ read pull_ubuntu
 
 echo "Updating and upgrading system..."
 
+systemctl stop systemd-resolved
+systemctl disable systemd-resolved
+mv /etc/resolv.conf /etc/resolv.autoinstall.backup
+cp resolv.conf /etc/
+
 apt update && apt upgrade -y
 
 echo "installing basic pakages to install easytether"
@@ -52,10 +57,7 @@ systemctl restart systemd-networkd
 
 if [[ $distro == "ubuntu" ]]; then
     echo $distro
-    systemctl stop systemd-resolved
-    systemctl disable systemd-resolved
-    mv /etc/resolv.conf /etc/resolv.autoinstall.backup
-    cp resolv.conf /etc/
+
 
     echo "Updating and Upgrading system in Ubuntu..."
     apt update && apt upgrade -y
@@ -128,11 +130,6 @@ fi
 if [[ $distro == "debian" ]]; then
     echo $distro
  
-    systemctl stop systemd-resolved
-    systemctl disable systemd-resolved
-    mv /etc/resolv.conf /etc/resolv.autoinstall.backup
-    cp resolv.conf /etc/
-
     if [[ $change_sources == "y" ]]; then
         rm /etc/apt/sources.list
         cp sources.list /etc/apt/
@@ -160,7 +157,6 @@ if [[ $distro == "debian" ]]; then
         echo -e "8192eu\n\nloop" | sudo tee /etc/modules
         echo "options 8192eu rtw_power_mgnt=0 rtw_enusbss=0" | sudo tee /etc/modprobe.d/8192eu.conf
         sudo update-grub; sudo update-initramfs -u
-        cd ..
     fi
 
     if [[ $interfaces == "y" ]]; then
