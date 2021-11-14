@@ -5,7 +5,7 @@
 docker run -d \
     --name pihole \
     -p 53:53/tcp -p 53:53/udp \
-    -p 80:80 \
+    -p 8080:80 \
     -p 443:443 \
     -p 8080:8080 \
     -e TZ="America/Chicago" \
