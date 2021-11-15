@@ -59,7 +59,7 @@ if [[ $distro == "ubuntu" ]]; then
     echo $distro
 
 
-    echo "Updating and Upgrading system in Ubuntu..."
+    echo "Updating and Upgrading system ..."
     apt update && apt upgrade -y
     echo "Installing essential packages..."
     apt install git sudo curl wget docker docker.io nano network-manager dhcpcd5 wireless-tools firmware-realtek linux-headers-generic build-essential dkms gdebi software-properties-common bmon -y
@@ -67,6 +67,10 @@ if [[ $distro == "ubuntu" ]]; then
     if [[ $hotspot == "y" ]]; then
         echo "cloning into https://github.com/oblique/create_ap"
         git clone https://github.com/oblique/create_ap
+	cd create_ap
+	make install
+	cd ..
+ 	./hotspot.sh
     fi
 
     if [[ $wifi_usb == "y" ]]; then
