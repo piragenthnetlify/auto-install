@@ -13,3 +13,6 @@ iface enp5s0 inet dhcp
 
 allow-hotplug wlx7cc2c611779b
 iface wlx7cc2c611779b inet dhcp
+
+allow-hotplug wlp3s0
+iface wlp3s0 inet dhcp
