@@ -110,6 +110,10 @@ if [[ $distro == "ubuntu" ]]; then
         sudo apt update
         sudo apt install jellyfin
     fi
+    if [[ $pull_ubuntu == "y" ]]; then
+        echo "PUll Ubuntu from docker"
+        docker pull ubuntu
+    fi
 
     if [[ $pihole_yn == "y" ]]; then
         if [[ $pihole == "pihole" ]]; then
@@ -125,10 +129,7 @@ if [[ $distro == "ubuntu" ]]; then
         fi
     fi
 
-    if [[ $pull_ubuntu == "y" ]]; then
-        echo "PUll Ubuntu from docker"
-        docker pull ubuntu
-    fi
+
 fi
 
 
@@ -187,6 +188,10 @@ if [[ $distro == "debian" ]]; then
         sudo apt update
         sudo apt install jellyfin
     fi
+    if [[ $pull_ubuntu == "y" ]]; then
+        echo "PUll Ubuntu from docker"
+        docker pull ubuntu
+    fi
 
     if [[ $pihole_yn == "y" ]]; then
         if [[ $pihole == "pihole" ]]; then
@@ -206,13 +211,8 @@ if [[ $distro == "debian" ]]; then
         fi
     fi
 
-    if [[ $pull_ubuntu == "y" ]]; then
-        echo "PUll Ubuntu from docker"
-        docker pull ubuntu
-    fi
     
 fi
-
 
 
 
