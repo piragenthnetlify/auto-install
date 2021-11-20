@@ -97,7 +97,10 @@ if [[ $distro == "ubuntu" ]]; then
 
     if [[ $omv == "y" ]]; then
         echo "Installing OMV"
-        sudo wget -O - https://github.com/OpenMediaVault-Plugin-Developers/installScript/raw/master/install | sudo bash
+	#sudo wget -O - https://github.com/OpenMediaVault-Plugin-Developers/installScript/raw/master/install | sudo bash
+	sudo curl -sSL https://github.com/OpenMediaVault-Plugin-Developers/installScript/raw/master/install | sudo bash
+
+
     fi
 
     if [[ $jellyfin == "y" ]]; then
