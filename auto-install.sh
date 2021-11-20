@@ -75,7 +75,7 @@ if [[ $distro == "ubuntu" ]]; then
 
     if [[ $wifi_usb == "y" ]]; then
         echo "cloning into https://github.com/Mange/rtl8192eu-linux-driver"
-        git clone git clone https://github.com/Mange/rtl8192eu-linux-driver
+        git clone https://github.com/Mange/rtl8192eu-linux-driver
         echo "Installing wifi Drivers"
         cd rtl8192eu-linux-driver
         dkms add .   
@@ -152,7 +152,7 @@ if [[ $distro == "debian" ]]; then
 
     if [[ $wifi_usb == "y" ]]; then
         echo "cloning into https://github.com/Mange/rtl8192eu-linux-driver"
-        git clone git clone https://github.com/Mange/rtl8192eu-linux-driver
+        git clone https://github.com/Mange/rtl8192eu-linux-driver
         echo "Installing wifi Drivers"
         cd rtl8192eu-linux-driver
         dkms add .   
