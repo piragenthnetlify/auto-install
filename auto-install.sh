@@ -65,7 +65,8 @@ if [[ $distro == "ubuntu" ]]; then
     echo "Updating and Upgrading system ..."
     apt update && apt upgrade -y
     echo "Installing essential packages..."
-    apt install hostapd git sudo curl wget docker docker.io nano network-manager dhcpcd5 wireless-tools firmware-realtek linux-headers-generic build-essential dkms gdebi software-properties-common bmon ifupdown -y
+    apt install hostapd git sudo curl wget docker docker.io nano network-manager dhcpcd5 wireless-tools firmware-realtek linux-headers-generic build-essential dkms gdebi software-properties-common bmon ifupdown python3-pip-y
+    pip install docker-compose
 
     if [[ $hotspot == "y" ]]; then
         echo "cloning into https://github.com/oblique/create_ap"
@@ -162,8 +163,8 @@ if [[ $distro == "debian" ]]; then
     echo "Updating and Upgrading system in Debian..."
     apt update && apt upgrade -y
     echo "Installing essential packages..."
-    apt install git sudo curl wget docker docker.io nano network-manager dhcpcd5 wireless-tools firmware-realtek linux-headers-generic build-essential dkms gdebi software-properties-common bmon -y
-
+    apt install git sudo curl wget docker docker.io nano network-manager dhcpcd5 wireless-tools firmware-realtek linux-headers-generic build-essential dkms gdebi software-properties-common bmon python3-pip ifupdown -y
+    pip install docker-compose
     if [[ $hotspot == "y" ]]; then
         echo "cloning into https://github.com/oblique/create_ap"
         git clone https://github.com/oblique/create_ap
