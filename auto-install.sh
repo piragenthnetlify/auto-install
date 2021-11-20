@@ -37,6 +37,9 @@ fi
 echo "Do you want to pull ubuntu in docker (y/n)"
 read pull_ubuntu
 
+echo "Do you want to install syncthing"
+read syncthing
+
 echo "Updating and upgrading system..."
 
 systemctl stop systemd-resolved
@@ -129,7 +132,19 @@ if [[ $distro == "ubuntu" ]]; then
         fi
     fi
 
+<<<<<<< HEAD
+    if [[ $syncthing == "y"]]; then
+        echo "installing syncthing in Docker..."
+        docker-compose up
+    fi
 
+    if [[ $pull_ubuntu == "y" ]]; then
+        echo "PUll Ubuntu from docker"
+        docker pull ubuntu
+    fi
+=======
+
+>>>>>>> 6571851c3d1b9722071fcccc079eb63f3b38238a
 fi
 
 
@@ -209,6 +224,10 @@ if [[ $distro == "debian" ]]; then
             chmod u+x networkchunk-pihole.sh
             ./networkchunk-pihole.sh
         fi
+    fi
+    if [[ $syncthing == "y"]]; then
+        echo "installing syncthing in Docker..."
+        docker-compose up
     fi
 
     
