@@ -6,7 +6,7 @@ echo "what distro are you using Debian or Ubuntu :"
 read distro
 
 if [[ $distro == "debian" ]]; then
-    deb  sed -i '/cdrom/d' '/etc/apt/sources.list'
+    sed -i '/cdrom/d' '/etc/apt/sources.list'
     echo "Do you want to change sources.list (y/n)"
     read change_sources
 fi
