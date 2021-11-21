@@ -40,6 +40,9 @@ read pull_ubuntu
 echo "Do you want to install syncthing"
 read syncthing
 
+echo "Do you want to install PlexMediaServer"
+read plex
+
 echo "Updating and upgrading system..."
 
 systemctl stop systemd-resolved
@@ -65,7 +68,7 @@ if [[ $distro == "ubuntu" ]]; then
     echo "Updating and Upgrading system ..."
     apt update && apt upgrade -y
     echo "Installing essential packages..."
-    apt install hostapd git sudo curl wget docker docker.io nano network-manager dhcpcd5 wireless-tools firmware-realtek linux-headers-generic build-essential dkms gdebi software-properties-common bmon ifupdown python3-pip-y
+    apt install snapd hostapd git sudo curl wget docker docker.io nano network-manager dhcpcd5 wireless-tools firmware-realtek linux-headers-generic build-essential dkms gdebi software-properties-common bmon ifupdown python3-pip-y
     pip install docker-compose
 
     if [[ $hotspot == "y" ]]; then
@@ -143,6 +146,12 @@ if [[ $distro == "ubuntu" ]]; then
         echo "PUll Ubuntu from docker"
         docker pull ubuntu
     fi
+
+    if [[ $plex == "y" ]]; then
+        echo "installing plexmediaserver"
+        snap install plexmediaserver
+    fi
+
 =======
 
 >>>>>>> 6571851c3d1b9722071fcccc079eb63f3b38238a
@@ -163,7 +172,7 @@ if [[ $distro == "debian" ]]; then
     echo "Updating and Upgrading system in Debian..."
     apt update && apt upgrade -y
     echo "Installing essential packages..."
-    apt install git sudo curl wget docker docker.io nano network-manager dhcpcd5 wireless-tools firmware-realtek linux-headers-generic build-essential dkms gdebi software-properties-common bmon python3-pip ifupdown -y
+    apt install git snapd sudo curl wget docker docker.io nano network-manager dhcpcd5 wireless-tools firmware-realtek linux-headers-generic build-essential dkms gdebi software-properties-common bmon python3-pip ifupdown -y
     pip install docker-compose
     if [[ $hotspot == "y" ]]; then
         echo "cloning into https://github.com/oblique/create_ap"
@@ -229,6 +238,11 @@ if [[ $distro == "debian" ]]; then
     if [[ $syncthing == "y"]]; then
         echo "installing syncthing in Docker..."
         docker-compose up
+    fi
+    
+    if [[ $plex == "y" ]]; then
+        echo "installing plexmediaserver"
+        snap install plexmediaserver
     fi
 
     
