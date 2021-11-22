@@ -5,13 +5,13 @@ services:
     container_name: syncthing
     hostname: syncthing #optional
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=0
+      - PGID=0
       - TZ=Europe/London
     volumes:
-      - /path/to/appdata/config:/config
-      - /path/to/data1:/data1
-      - /path/to/data2:/data2
+      
+      - /srv/dev-disk-by-uuid-b370b391-24a6-4f18-b38b-1616c5b2ccf8:/home/piragenth/syncthing
+
     ports:
       - 8384:8384
       - 22000:22000/tcp
