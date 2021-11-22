@@ -1,6 +1,6 @@
 echo "piragenth's auto install"
 
-echo "YOU NEED TO ROOT TO RUN THIS SCRIPT"
+echo "YOU NEED TO BE ROOT TO RUN THIS SCRIPT"
 
 echo "what distro are you using Debian or Ubuntu :"
 read distro
