@@ -37,8 +37,11 @@ fi
 echo "Do you want to pull ubuntu in docker (y/n)"
 read pull_ubuntu
 
-echo "Do you want to install syncthing"
+echo "Do you want to install syncthing in docker"
 read syncthing
+
+echo "Do you want to install jdownloader in docker"
+read jdownloader
 
 echo "Do you want to install PlexMediaServer"
 read plex
@@ -139,8 +142,16 @@ if [[ $distro == "ubuntu" ]]; then
 <<<<<<< HEAD
     if [[ $syncthing == "y"]]; then
         echo "installing syncthing in Docker..."
+        cd syncthing
         docker-compose up
     fi
+
+    if [[ $jdownloader == "y" ]]; then
+        echo "installing jdownloader in Docker..."
+        cd jdownloader
+        docker-compose up
+    fi
+
 
     if [[ $pull_ubuntu == "y" ]]; then
         echo "PUll Ubuntu from docker"
@@ -237,9 +248,15 @@ if [[ $distro == "debian" ]]; then
     fi
     if [[ $syncthing == "y"]]; then
         echo "installing syncthing in Docker..."
+        cd syncthing
         docker-compose up
     fi
     
+    if [[ $jdownloader == "y" ]]; then
+        echo "installing jdownloader in Docker..."
+        cd jdownloader
+        docker-compose up
+    fi
     if [[ $plex == "y" ]]; then
         echo "installing plexmediaserver"
         snap install plexmediaserver

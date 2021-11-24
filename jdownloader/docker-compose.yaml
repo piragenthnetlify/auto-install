@@ -1,0 +1,13 @@
+version: '2'
+services:
+  jdownloader-2:
+    image: jlesage/jdownloader-2
+    ports:
+      - "6800:5800"
+      - "5900:5900"
+    
+    dns:
+      - 8.8.8.8
+    volumes:
+      - "/srv/dev-disk-by-uuid-b370b391-24a6-4f18-b38b-1616c5b2ccf8/appdata/jdownloader-2:/config:rw"
+      - "/srv/dev-disk-by-uuid-b370b391-24a6-4f18-b38b-1616c5b2ccf8/jdownloader:/output:rw"
