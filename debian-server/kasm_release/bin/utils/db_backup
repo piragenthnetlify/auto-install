@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+set -e
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root"
+   exit 1
+fi
+
+function display_help() {
+   echo "Usage: ${0}"
+   echo "-f Path to kasm db backup file (tar)"
+   echo "-p Path to kasm installation desired for backup e.g /opt/kasm/1.0.0"
+   echo "-v Verbose output"
+}
+
+while getopts 'vf:p:' flag; do
+  case "${flag}" in
+    f)
+        DB_FILE=$OPTARG
+        ;;
+    p)
+        KASM_INSTALL_BASE=$OPTARG
+        ;;
+    v)
+        set -x
+        ;;
+    *)
+        error "Unexpected option ${flag}"
+        display_help
+        ;;
+  esac
+done
+
+if [ -z "$DB_FILE" ]; then
+    echo "Error -  No database file specified ! "
+    echo ""
+    display_help
+    exit 1
+fi
+
+if [ -z "$KASM_INSTALL_BASE" ]; then
+    echo "Error -  No kasm installation path specified ! "
+    echo ""
+    display_help
+    exit 1
+fi
+
+export KASM_UID=$(id kasm -u)
+export KASM_GID=$(id kasm -g)
+
+TEMP_DB_CONTAINER_NAME=temp_kasm_db_backup
+DB_BACKUP_DIR=$(dirname "${DB_FILE}")
+DB_BACKUP_FILE_NAME=$(basename "${DB_FILE}")
+
+
+pushd ${KASM_INSTALL_BASE}/docker > /dev/null
+echo "Removing Existing Database container"
+docker compose rm -f db > /dev/null
+
+docker stop ${TEMP_DB_CONTAINER_NAME} || true && docker rm ${TEMP_DB_CONTAINER_NAME} || true
+
+echo "Creating temporary database backup container..."
+docker compose run -v ${DB_BACKUP_DIR}/:/tmp/ -d --name ${TEMP_DB_CONTAINER_NAME} db
+sleep 10
+
+echo "Executing Backup"
+docker exec ${TEMP_DB_CONTAINER_NAME} pg_dump -b -C -U kasmapp -Ft kasm -f /tmp/${DB_BACKUP_FILE_NAME}
+
+echo "Removing Temporary Backup Container"
+docker rm -f ${TEMP_DB_CONTAINER_NAME}
+
+echo "Database backup is at the following location: ${DB_FILE}"
+popd > /dev/null

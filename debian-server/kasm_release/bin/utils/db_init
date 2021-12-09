@@ -1,0 +1,96 @@
+#!/usr/bin/env bash
+set -e
+KASM_VERSION="1.10.0"
+KASM_INSTALL_BASE="/opt/kasm/${KASM_VERSION}"
+DATABASE_HOSTNAME='false'
+DATABASE_PASSWORD=''
+DATABASE_PORT='5432'
+DATABASE_SSL='false'
+
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root"
+   exit 1
+fi
+
+function display_help() {
+   echo "Usage: ${0}"
+   echo "-h Display this help menu"
+   echo "-i initialize the database (delete and recreated schema)"
+   echo "-s Absolute path to the seed file (yaml)"
+   echo "-v Verbose output"
+
+}
+
+while getopts 'vihs:t:T:q:Q:' flag; do
+  case "${flag}" in
+    h)
+        display_help
+        exit 0
+        ;;
+    s)
+        SEED_FILE=$OPTARG
+        SEED_FILE_NAME=$(basename ${SEED_FILE})
+        echo "Setting Seed file as ${SEED_FILE}"
+        ;;
+    i)
+        INITIALIZE_DATABASE="--initialize-database"
+        ;;
+    v)
+        set -x
+        ;;
+    q)
+        DATABASE_HOSTNAME=$OPTARG
+        ;;
+    Q)
+        DATABASE_PASSWORD=$OPTARG
+        ;;
+    T)
+        DATABASE_PORT=$OPTARG
+        ;;
+    t)
+        DATABASE_SSL=$OPTARG
+        ;;
+    *)
+        error "Unexpected option ${flag}"
+        display_help
+        ;;
+  esac
+done
+
+if [ -z "${SEED_FILE}" ]; then
+    echo "Error -  No seed file specified ! "
+    echo ""
+    display_help
+    exit 1
+fi
+
+export KASM_UID=$(id kasm -u)
+export KASM_GID=$(id kasm -g)
+
+pushd ${KASM_INSTALL_BASE}/docker > /dev/null
+
+# local database
+if [ "$DATABASE_HOSTNAME" == 'false' ] ; then
+
+    # TODO Check of the db already exists or not
+    set +e
+    docker compose stop
+    docker kill kasm_db
+    docker container rm kasm_db
+    set -e
+
+    if [ ! -z "${INITIALIZE_DATABASE}" ]; then
+        set +e
+        docker volume rm kasm_db_${KASM_VERSION}
+        set -e
+        docker volume create kasm_db_${KASM_VERSION}
+    fi
+
+    docker compose up -d db
+    sleep 5
+fi
+
+docker compose  -f ${KASM_INSTALL_BASE}/docker/.conf/docker-compose-api.yaml run -v ${SEED_FILE}:/tmp/${SEED_FILE_NAME} --rm --entrypoint "/usr/bin/kasm_server.so ${INITIALIZE_DATABASE} --cfg /opt/kasm/current/conf/app/api.app.config.yaml --populate-production --seed-file /tmp/${SEED_FILE_NAME}" kasm_api
+docker compose stop
+echo "Database Initialization Complete"
+popd > /dev/null

@@ -1,0 +1,12 @@
+agents:
+  00000000-0000-0000-0000-000000000000:
+    agent_type: host
+    agent_version: 1
+    cores_override: 0
+    container_limit: 0
+    operational_status: starting
+    hostname: proxy
+    host_type: single
+    memory_override: 0
+    provider: hardware
+    enabled: true

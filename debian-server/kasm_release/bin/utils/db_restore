@@ -1,0 +1,117 @@
+#!/usr/bin/env bash
+set -e
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root"
+   exit 1
+fi
+
+function verify() {
+    printf "\n\n"
+    echo "WARNING!!!"
+    echo "__________________________"
+    printf "\n\n"
+    echo "Contents of the existing database will be removed. This is irreversible!"
+    printf "\n"
+    read -p "Continue? (y/n) " choice
+    case "$choice" in
+      y|Y )
+        return
+        ;;
+      n|N )
+        echo "Exiting"
+        exit 1
+        ;;
+      * )
+        echo "Invalid Response"
+        echo "Exiting"
+        exit 1
+        ;;
+    esac
+
+}
+
+function display_help() {
+   echo "Usage: ${0}"
+   echo "-f Path to kasm db backup file (tar)"
+   echo "-p Path to kasm installation desired for restore e.g /opt/kasm/1.0.0"
+   echo "-v Verbose output"
+}
+
+
+while getopts 'vaf:p:' flag; do
+  case "${flag}" in
+    a)
+        ACCEPT_WARNING=true
+        ;;
+    f)
+        DB_FILE=$OPTARG
+        ;;
+    p)
+        KASM_INSTALL_BASE=$OPTARG
+        ;;
+    v)
+        set -x
+        ;;
+    *)
+        error "Unexpected option ${flag}"
+        display_help
+        ;;
+  esac
+done
+
+if [ -z "$DB_FILE" ]; then
+    echo "Error -  No database file specified ! "
+    echo ""
+    display_help
+    exit 1
+fi
+
+if [ -z "$KASM_INSTALL_BASE" ]; then
+    echo "Error -  No kasm installation path specified ! "
+    echo ""
+    display_help
+    exit 1
+fi
+
+if [ ! "${ACCEPT_WARNING}" = true ]
+then
+    verify
+fi
+
+
+TEMP_DB_BACKUP_PATH=${KASM_INSTALL_BASE}/conf/database/
+DB_BACKUP_DIR=$(dirname "${DB_FILE}")
+DB_BACKUP_FILE_NAME=$(basename "${DB_FILE}")
+
+
+cp ${DB_FILE} ${TEMP_DB_BACKUP_PATH}/${DB_BACKUP_FILE_NAME}
+
+pushd ${KASM_INSTALL_BASE}/docker > /dev/null
+
+
+export KASM_UID=$(id kasm -u)
+export KASM_GID=$(id kasm -g)
+
+
+echo "Stopping Services"
+sudo ${KASM_INSTALL_BASE}/bin/stop
+
+echo "Starting DB Service"
+docker compose up -d db
+sleep 10
+
+echo "Executing restore"
+docker compose exec db psql -e -U kasmapp -c "drop database if exists kasm;" postgres
+docker compose exec db psql -e -U kasmapp -c "create database kasm;" postgres
+docker compose exec db psql -e -U kasmapp -c "drop schema if exists public cascade;" kasm
+docker compose exec db pg_restore -e -U kasmapp -Ft -d kasm  /tmp/${DB_BACKUP_FILE_NAME}
+
+rm  ${TEMP_DB_BACKUP_PATH}/${DB_BACKUP_FILE_NAME}
+echo "Stopping Services"
+sudo ${KASM_INSTALL_BASE}/bin/stop
+
+
+echo "Restore Complete"
+popd > /dev/null
+
+

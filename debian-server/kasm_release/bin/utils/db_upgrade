@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+set -e
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root"
+   exit 1
+fi
+
+export KASM_UID=$(id kasm -u)
+export KASM_GID=$(id kasm -g)
+
+
+
+function display_help() {
+   echo "Usage: ${0}"
+   echo "-p Path to kasm installation to upgrade e.g /opt/kasm/1.0.0"
+   echo "-v Verbose output"
+}
+
+while getopts 'vp:' flag; do
+  case "${flag}" in
+    p)
+        KASM_INSTALL_BASE=$OPTARG
+        ;;
+    v)
+        set -x
+        ;;
+    *)
+        error "Unexpected option ${flag}"
+        display_help
+        ;;
+  esac
+done
+
+if [ -z "$KASM_INSTALL_BASE" ]; then
+    echo "Error -  No kasm installation path specified ! "
+    echo ""
+    display_help
+    exit 1
+fi
+
+pushd ${KASM_INSTALL_BASE}/docker > /dev/null
+
+
+echo "Removing Existing Database container"
+
+echo "Stopping Services"
+${KASM_INSTALL_BASE}/bin/stop
+
+
+docker compose rm -f db
+
+sed "s/kasm_api:/kasm_api:\n    healthcheck:\n      disable: true/g" ${KASM_INSTALL_BASE}/docker/.conf/docker-compose-all.yaml > ${KASM_INSTALL_BASE}/docker/.conf/docker-compose-all-upgrade.yaml
+docker compose -f ${KASM_INSTALL_BASE}/docker/.conf/docker-compose-all-upgrade.yaml rm -f db
+docker compose -f ${KASM_INSTALL_BASE}/docker/.conf/docker-compose-all-upgrade.yaml up -d db
+sleep 10
+
+set +e
+docker compose -f ${KASM_INSTALL_BASE}/docker/.conf/docker-compose-all-upgrade.yaml  run  --rm  --entrypoint "/usr/bin/kasm_server.so --upgrade-database --cfg /opt/kasm/current/conf/app/api.app.config.yaml" kasm_api
+
+set -e
+docker compose -f ${KASM_INSTALL_BASE}/docker/.conf/docker-compose-all-upgrade.yaml stop
+docker compose -f ${KASM_INSTALL_BASE}/docker/.conf/docker-compose-all-upgrade.yaml rm -f kasm_api
+docker compose -f ${KASM_INSTALL_BASE}/docker/.conf/docker-compose-all-upgrade.yaml rm -f db
+rm ${KASM_INSTALL_BASE}/docker/.conf/docker-compose-all-upgrade.yaml
+
+echo "Database Upgrade Complete"
+popd > /dev/null
