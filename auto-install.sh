@@ -139,7 +139,7 @@ if [[ $distro == "ubuntu" ]]; then
         fi
     fi
 
-<<<<<<< HEAD
+
     if [[ $syncthing == "y"]]; then
         echo "installing syncthing in Docker..."
         cd syncthing
@@ -163,9 +163,7 @@ if [[ $distro == "ubuntu" ]]; then
         snap install plexmediaserver
     fi
 
-=======
 
->>>>>>> 6571851c3d1b9722071fcccc079eb63f3b38238a
 fi
 
 
