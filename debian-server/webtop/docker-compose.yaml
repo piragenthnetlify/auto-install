@@ -1,0 +1,21 @@
+version: "2.1"
+
+services:
+  webtop:
+    image: lscr.io/linuxserver/webtop
+    container_name: webtop
+    privileged: true #optional
+    security_opt:
+      - seccomp:unconfined #optional
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - SUBFOLDER=/ #optional
+    volumes:
+      - /home/piragenth/webtop/config/:/config
+      - /var/run/docker.sock:/var/run/docker.sock #optional
+    ports:
+      - 8084:3000
+    shm_size: "10gb" #optional
+    restart: unless-stopped
