@@ -48,16 +48,16 @@ read plex
 
 echo "Updating and upgrading system..."
 
-systemctl stop systemd-resolved
-systemctl disable systemd-resolved
-mv /etc/resolv.conf /etc/resolv.autoinstall.backup
-cp resolv.conf /etc/
+#systemctl stop systemd-resolved
+#systemctl disable systemd-resolved
+#mv /etc/resolv.conf /etc/resolv.autoinstall.backup
+#cp resolv.conf /etc/
 
 apt update && apt upgrade -y
 
 echo "installing basic pakages to install easytether"
 apt install git gdebi dhcpcd5 wget
-wget http://www.mobile-stream.com/beta/debian/10/easytether_0.8.9_amd64.deb
+#wget http://www.mobile-stream.com/beta/debian/10/easytether_0.8.9_amd64.deb
 gdebi easytether_0.8.9_amd64.deb
 easytether-usb
 dhcpcd tun-easytether
@@ -140,7 +140,7 @@ if [[ $distro == "ubuntu" ]]; then
     fi
 
 
-    if [[ $syncthing == "y"]]; then
+    if [[ $syncthing == "y" ]]; then
         echo "installing syncthing in Docker..."
         cd syncthing
         docker-compose up
@@ -244,7 +244,7 @@ if [[ $distro == "debian" ]]; then
             ./networkchunk-pihole.sh
         fi
     fi
-    if [[ $syncthing == "y"]]; then
+    if [[ $syncthing == "y" ]]; then
         echo "installing syncthing in Docker..."
         cd syncthing
         docker-compose up
