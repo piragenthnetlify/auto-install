@@ -48,10 +48,10 @@ read plex
 
 echo "Updating and upgrading system..."
 
-#systemctl stop systemd-resolved
-#systemctl disable systemd-resolved
-#mv /etc/resolv.conf /etc/resolv.autoinstall.backup
-#cp resolv.conf /etc/
+systemctl stop systemd-resolved
+systemctl disable systemd-resolved
+mv /etc/resolv.conf /etc/resolv.autoinstall.backup
+cp resolv.conf /etc/
 
 apt update && apt upgrade -y
 
@@ -71,7 +71,7 @@ if [[ $distro == "ubuntu" ]]; then
     echo "Updating and Upgrading system ..."
     apt update && apt upgrade -y
     echo "Installing essential packages..."
-    apt install snapd hostapd git sudo curl wget docker docker.io nano network-manager dhcpcd5 wireless-tools firmware-realtek linux-headers-generic build-essential dkms gdebi software-properties-common bmon ifupdown python3-pip-y
+    apt install snapd hostapd git sudo curl wget docker docker.io nano network-manager dhcpcd5 wireless-tools firmware-realtek linux-headers-generic build-essential dkms gdebi software-properties-common bmon ifupdown python3-pip -y
     pip install docker-compose
 
     if [[ $hotspot == "y" ]]; then
