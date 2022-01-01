@@ -128,7 +128,7 @@ if [[ $distro == "ubuntu" ]]; then
     if [[ $pihole_yn == "y" ]]; then
         if [[ $pihole == "pihole" ]]; then
             echo "installing pihole"
-            docker run -it -p 53:53/udp -p 53:53/tcp -p 47:47/udp -p 47:47/tcp -p 67:67/tcp -p 67:67/udp -p 443:443 -p 8080:80 --name pihole pihole/pihole
+            docker run -it -d -p 53:53/udp -p 53:53/tcp -p 47:47/udp -p 47:47/tcp -p 67:67/tcp -p 67:67/udp -p 443:443 -p 8080:80 --name pihole pihole/pihole
         fi
 
         if [[ $pihole == "nc" ]]; then
@@ -234,7 +234,7 @@ if [[ $distro == "debian" ]]; then
             systemctl disable systemd-resolved
             mv /etc/resolv.conf /etc/resolv.autoinstall.backup
             cp resolv.conf /etc/
-            docker run -it -p 53:53/udp -p 53:53/tcp -p 47:47/udp -p 47:47/tcp -p 67:67/tcp -p 67:67/udp -p 443:443 -p 8080:80 --name pihole pihole/pihole
+            docker run -it -d -p 53:53/udp -p 53:53/tcp -p 47:47/udp -p 47:47/tcp -p 67:67/tcp -p 67:67/udp -p 443:443 -p 8080:80 --name pihole pihole/pihole
         fi
 
         if [[ $pihole == "nc" ]]; then
