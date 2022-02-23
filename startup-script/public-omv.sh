@@ -1,2 +1,2 @@
 #!/bin/bash
-cloudflared tunnel --hostname omv.piragenth.tk --url http://localhost
+cloudflared tunnel --hostname omv.achuthan.tk --url http://localhost
