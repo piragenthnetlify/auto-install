@@ -1,0 +1,13 @@
+[Unit]
+
+Description=Jellyfin
+
+After=default.target
+
+[Service]
+
+ExecStart=/home/achuthan/startup-script/public-jellyfin.sh
+
+[Install]
+
+WantedBy=default.target

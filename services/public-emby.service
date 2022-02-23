@@ -1,0 +1,13 @@
+[Unit]
+
+Description=emby
+
+After=default.target
+
+[Service]
+
+ExecStart=/home/achuthan/startup-script/public-emby.sh
+
+[Install]
+
+WantedBy=default.target

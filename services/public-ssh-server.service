@@ -1,0 +1,13 @@
+[Unit]
+
+Description=SSH-Server
+
+After=default.target
+
+[Service]
+
+ExecStart=/home/achuthan/startup-script/public-ssh-server.sh
+
+[Install]
+
+WantedBy=default.target

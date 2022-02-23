@@ -1,0 +1,13 @@
+[Unit]
+
+Description=SSH-Ryzen
+
+After=default.target
+
+[Service]
+
+ExecStart=/home/achuthan/startup-script/public-ssh-ryzen.sh
+
+[Install]
+
+WantedBy=default.target

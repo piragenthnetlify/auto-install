@@ -1,0 +1,13 @@
+[Unit]
+
+Description=OMV	
+
+After=default.target
+
+[Service]
+
+ExecStart=/home/achuthan/startup-script/public-omv.sh
+
+[Install]
+
+WantedBy=default.target

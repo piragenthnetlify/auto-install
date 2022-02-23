@@ -1,0 +1,13 @@
+[Unit]
+
+Description=Plex
+
+After=default.target
+
+[Service]
+
+ExecStart=/home/achuthan/startup-script/public-plex.sh
+
+[Install]
+
+WantedBy=default.target

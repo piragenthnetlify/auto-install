@@ -1,0 +1,13 @@
+[Unit]
+
+Description=SSH-Ubuntu
+
+After=default.target
+
+[Service]
+
+ExecStart=/home/achuthan/startup-script/public-ssh-ubuntu.sh
+
+[Install]
+
+WantedBy=default.target

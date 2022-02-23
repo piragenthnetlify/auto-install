@@ -1,0 +1,13 @@
+[Unit]
+
+Description=SSH-Hotspot
+
+After=default.target
+
+[Service]
+
+ExecStart=/home/achuthan/startup-script/public-ssh-hotspot.sh
+
+[Install]
+
+WantedBy=default.target
